@@ -1,3 +1,3 @@
-import {Subject} from 'rxjs/Subject'
+import * as Rx from '@reactivex/rxjs'
 
-export default new Subject()
+export default new Rx.Subject()
