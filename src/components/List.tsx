@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as Rx from '@reactivex/rxjs'
 import action$ from '../actions/stream'
+import worx from '../actions/worx'
 
 // import * as Rx from 'rxjs/Rx'
 
@@ -39,18 +40,6 @@ export default class List extends React.Component <Props, State> {
                 const time =this.state.time.length ? [this.time,...this.state.time] : [this.time]
                 this.setState({time})
             })
-
-        // this.sub1 = (action$ as any).subscribe(action => {
-        //     if(action.type !== 'TICK') return
-        //     this.time = action.payload
-        // })
-
-
-        // this.sub2 = (action$ as any).subscribe(action => {
-        //     if(action.type !== 'CLICK') return
-        //     const time =this.state.time.length ? [this.time,...this.state.time] : [this.time]
-        //     this.setState({time})
-        // })
     }
 
     componentWillUnmount(){

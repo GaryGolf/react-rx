@@ -1,5 +1,6 @@
 import * as React from 'react'
 import action$ from '../actions/stream'
+import worx from '../actions/worx'
 import * as Rx from '@reactivex/rxjs'
 
 interface Props {}
@@ -15,7 +16,7 @@ interface Action {
 
 export default class Clock extends React.Component <Props, State> {
 
-    private subscribtion: Rx.Subscription
+    private int: number
 
     constructor(props){
         super(props)
@@ -24,22 +25,19 @@ export default class Clock extends React.Component <Props, State> {
     
 
     componentDidMount(){
-        this.subscribtion = Rx.Observable
-            .interval(3000)
-            .mapTo({type: 'TICK', payload: this.whatTimeIsIt()})
-            .subscribe(action$)
-        setInterval(()=> this.setState({time: Date.now()}), 500)
+      
+       this.int = window.setInterval(()=>  worx.postMessage({type: 'TICK', payload: Date.now()}), 1000)
+        worx.addEventListener('message', event => {
+            if(event.data.type == 'TICK') this.setState({time: event.data.payload})
+        }, false)
     }
 
     componentWillUnmount(){
-        this.subscribtion.unsubscribe()
-    }
-
-    whatTimeIsIt(): number{
-        return Date.now()
+        window.clearInterval(this.int)
     }
 
     render() {
+        
         return <h4>{new Date(this.state.time).toString()}</h4>
     }
 }
