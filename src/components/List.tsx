@@ -1,9 +1,8 @@
 import * as React from 'react'
 import * as Rx from '@reactivex/rxjs'
 import action$ from '../actions/stream'
-import worx from '../actions/worx'
+// import worx from '../actions/worx'
 
-// import * as Rx from 'rxjs/Rx'
 
 
 

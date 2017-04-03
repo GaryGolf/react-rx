@@ -1,7 +1,6 @@
 import * as React from 'react'
 import action$ from '../actions/stream'
-import worx from '../actions/worx'
-import * as Rx from '@reactivex/rxjs'
+import itworx from '../actions/itworx'
 
 interface Props {}
 interface State {
@@ -21,19 +20,22 @@ export default class Clock extends React.Component <Props, State> {
     constructor(props){
         super(props)
         this.state={time: Date.now()}
+        this.getTime = this.getTime.bind(this)
+        itworx.subscribe('TICK', this.getTime)
     }
-    
 
     componentDidMount(){
       
-       this.int = window.setInterval(()=>  worx.postMessage({type: 'TICK', payload: Date.now()}), 1000)
-        worx.addEventListener('message', event => {
-            if(event.data.type == 'TICK') this.setState({time: event.data.payload})
-        }, false)
+       this.int = window.setInterval(()=>  itworx.dispatch({type: 'TICK', payload: Date.now()}), 1000)
     }
 
     componentWillUnmount(){
         window.clearInterval(this.int)
+        itworx.unsubscribe('TICK', this.getTime)
+    }
+
+    getTime(action: Action) {
+        this.setState({time: action.payload})
     }
 
     render() {
